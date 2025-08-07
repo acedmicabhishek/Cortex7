@@ -1,4 +1,4 @@
-# Cortex7
+# Cortex7 (under development)
 LLM aimed to surpass Limits
 
 `Not a copy of your LLM`
