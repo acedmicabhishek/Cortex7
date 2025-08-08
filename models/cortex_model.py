@@ -1,15 +1,15 @@
-import tensorflow as tf
+import torch.nn as nn
 from models.cortex_block import CortexBlock
 
-class CortexModel(tf.keras.Model):
+class CortexModel(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.embed = tf.keras.layers.Embedding(config["vocab_size"], config["embedding_dim"])
-        self.blocks = [CortexBlock(config) for _ in range(config["num_layers"])]
-        self.final_ln = tf.keras.layers.LayerNormalization()
-        self.head = tf.keras.layers.Dense(config["vocab_size"])
+        self.embed = nn.Embedding(config["vocab_size"], config["embedding_dim"])
+        self.blocks = nn.ModuleList([CortexBlock(config) for _ in range(config["num_layers"])])
+        self.final_ln = nn.LayerNorm(config["embedding_dim"])
+        self.head = nn.Linear(config["embedding_dim"], config["vocab_size"])
 
-    def call(self, x):
+    def forward(self, x):
         x = self.embed(x)
         for block in self.blocks:
             x = block(x)

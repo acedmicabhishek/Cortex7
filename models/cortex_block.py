@@ -1,9 +1,10 @@
-import tensorflow as tf
+import torch.nn as nn
 
-class CortexBlock(tf.keras.layers.Layer):
+class CortexBlock(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.dense = tf.keras.layers.Dense(config["embedding_dim"], activation='relu')
+        self.dense = nn.Linear(config["embedding_dim"], config["embedding_dim"])
+        self.activation = nn.ReLU()
 
-    def call(self, x):
-        return self.dense(x)
+    def forward(self, x):
+        return self.activation(self.dense(x))

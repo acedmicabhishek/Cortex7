@@ -1,5 +1,7 @@
-import tensorflow as tf
+import torch
 
-print("TensorFlow version:", tf.__version__)
-print("Num GPUs Available:", len(tf.config.list_physical_devices('GPU')))
-print("GPU Devices:", tf.config.list_physical_devices('GPU'))
+print("PyTorch version:", torch.__version__)
+print("CUDA available:", torch.cuda.is_available())
+if torch.cuda.is_available():
+    print("Num GPUs Available:", torch.cuda.device_count())
+    print("GPU Devices:", [torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())])

@@ -1,10 +1,10 @@
 def get_config():
     return {
-        "vocab_size": 50257,
-        "embedding_dim": 128,
-        "seq_len": 128,
-        "num_layers": 2,
+        "vocab_size": 5000,
+        "embedding_dim": 64,
+        "seq_len": 32,
+        "num_layers": 1,
         "batch_size": 8,
-        "epochs": 10,
+        "epochs": 2,
         "learning_rate": 3e-4,
     }

@@ -1,14 +1,20 @@
-import tensorflow as tf
+import torch
+from torch.utils.data import Dataset, DataLoader
 
-def get_dummy_dataset(seq_len, batch_size):
-    # Dummy random int dataset
-    dataset = tf.data.Dataset.from_tensor_slices(
-        tf.random.uniform([10000, seq_len + 1], maxval=50000, dtype=tf.int32)
-    )
+class DummyDataset(Dataset):
+    def __init__(self, seq_len, num_samples=20000, vocab_size=70000):
+        self.seq_len = seq_len
+        self.num_samples = num_samples
+        self.vocab_size = vocab_size
+        self.data = torch.randint(0, vocab_size, (num_samples, seq_len + 1))
 
-    def split_input_target(chunk):
+    def __len__(self):
+        return self.num_samples
+
+    def __getitem__(self, idx):
+        chunk = self.data[idx]
         return chunk[:-1], chunk[1:]
 
-    dataset = dataset.map(split_input_target)
-    dataset = dataset.shuffle(1024).batch(batch_size).prefetch(tf.data.AUTOTUNE)
-    return dataset
+def get_dummy_dataset(seq_len, batch_size):
+    dataset = DummyDataset(seq_len)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=True), dataset.vocab_size
